@@ -1,0 +1,92 @@
+--- include/foonathan/memory/memory_arena.hpp
++++ include/foonathan/memory/memory_arena.hpp
+@@ -19,6 +19,7 @@
+ #include "config.hpp"
+ #include "default_allocator.hpp"
+ #include "error.hpp"
++#include "visibility_control.hpp"
+ 
+ namespace foonathan
+ {
+@@ -128,6 +129,7 @@ namespace foonathan
+                 using inserted_mb = memory_block;
+ 
+                 // how much an inserted block is smaller
++                FOONATHAN_MEMORY_PUBLIC
+                 static const std::size_t implementation_offset;
+ 
+                 // pushes a memory block
+@@ -167,8 +169,11 @@ namespace foonathan
+                     {
+                     }
+ 
++                    FOONATHAN_MEMORY_PUBLIC
+                     static const std::size_t div_alignment;
++                    FOONATHAN_MEMORY_PUBLIC
+                     static const std::size_t mod_offset;
++                    FOONATHAN_MEMORY_PUBLIC
+                     static const std::size_t offset;
+                 };
+ 
+
+--- /dev/null
++++ include/foonathan/memory/visibility_control.hpp
+@@ -0,0 +1,35 @@
++#ifndef FOONATHAN_MEMORY_VISIBILITY_CONTROL_HPP_INCLUDED
++#define FOONATHAN_MEMORY_VISIBILITY_CONTROL_HPP_INCLUDED
++
++// This logic was borrowed (then namespaced) from the examples on the gcc wiki:
++//     https://gcc.gnu.org/wiki/Visibility
++
++#if defined _WIN32 || defined __CYGWIN__
++  #ifdef __GNUC__
++    #define FOONATHAN_MEMORY_EXPORT __attribute__ ((dllexport))
++    #define FOONATHAN_MEMORY_IMPORT __attribute__ ((dllimport))
++  #else
++    #define FOONATHAN_MEMORY_EXPORT __declspec(dllexport)
++    #define FOONATHAN_MEMORY_IMPORT __declspec(dllimport)
++  #endif
++  #ifdef FOONATHAN_MEMORY_BUILDING_LIBRARY
++    #define FOONATHAN_MEMORY_PUBLIC FOONATHAN_MEMORY_EXPORT
++  #else
++    #define FOONATHAN_MEMORY_PUBLIC FOONATHAN_MEMORY_IMPORT
++  #endif
++  #define FOONATHAN_MEMORY_PUBLIC_TYPE FOONATHAN_MEMORY_PUBLIC
++  #define FOONATHAN_MEMORY_LOCAL
++#else
++  #define FOONATHAN_MEMORY_EXPORT __attribute__ ((visibility("default")))
++  #define FOONATHAN_MEMORY_IMPORT
++  #if __GNUC__ >= 4
++    #define FOONATHAN_MEMORY_PUBLIC __attribute__ ((visibility("default")))
++    #define FOONATHAN_MEMORY_LOCAL  __attribute__ ((visibility("hidden")))
++  #else
++    #define FOONATHAN_MEMORY_PUBLIC
++    #define FOONATHAN_MEMORY_LOCAL
++  #endif
++  #define FOONATHAN_MEMORY_PUBLIC_TYPE
++#endif
++
++#endif  // FOONATHAN_MEMORY_VISIBILITY_CONTROL_HPP_INCLUDED
+\ No newline at end of file
+
+--- src/CMakeLists.txt
++++ src/CMakeLists.txt
+@@ -48,6 +48,7 @@ set(header
+         ${header_path}/threading.hpp
+         ${header_path}/tracking.hpp
+         ${header_path}/virtual_memory.hpp
++        ${header_path}/visibility_control.hpp
+         ${CMAKE_CURRENT_BINARY_DIR}/container_node_sizes_impl.hpp)
+ 
+ set(src
+@@ -98,7 +99,9 @@ target_compile_definitions(foonathan_memory PUBLIC
+                             FOONATHAN_MEMORY=1
+                             FOONATHAN_MEMORY_VERSION_MAJOR=${FOONATHAN_MEMORY_VERSION_MAJOR}
+                             FOONATHAN_MEMORY_VERSION_MINOR=${FOONATHAN_MEMORY_VERSION_MINOR}
+-                            FOONATHAN_MEMORY_VERSION_PATCH=${FOONATHAN_MEMORY_VERSION_PATCH})
++                            FOONATHAN_MEMORY_VERSION_PATCH=${FOONATHAN_MEMORY_VERSION_PATCH}
++                            PRIVATE
++                            FOONATHAN_MEMORY_BUILDING_LIBRARY=1)
+ 
+ set_target_properties(foonathan_memory PROPERTIES
+                                        OUTPUT_NAME "foonathan_memory-${FOONATHAN_MEMORY_VERSION}")

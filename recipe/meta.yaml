@@ -10,9 +10,10 @@ source:
     git_rev: v0.6-2
     patches:
       - fix-windows-install.patch
+      - visibility-control.patch
 
 build:
-  number: 0
+  number: 1
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
 
