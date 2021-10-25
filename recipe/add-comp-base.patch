@@ -1,8 +1,5 @@
-diff --git a/cmake/comp/comp_base.cmake b/cmake/comp/comp_base.cmake
-new file mode 100644
-index 0000000..6dcddda
 --- /dev/null
-+++ b/cmake/comp/comp_base.cmake
++++ cmake/comp/comp_base.cmake
 @@ -0,0 +1,569 @@
 +# Copyright (C) 2015-2016 Jonathan Müller <jonathanmueller.dev@gmail.com>
 +# This file is subject to the license terms in the LICENSE file
