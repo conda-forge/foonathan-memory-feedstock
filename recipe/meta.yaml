@@ -1,7 +1,7 @@
 {% set name = "foonathan-memory" %}
 {% set version = "0.7.1" %}
 {% set major_version = version.split('.')[0] %}
-{% set minir_version = version.split('.')[1] %}
+{% set minor_version = version.split('.')[1] %}
 {% set patch_version = version.split('.')[2] %}
 
 package:
