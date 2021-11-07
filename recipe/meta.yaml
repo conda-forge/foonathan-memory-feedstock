@@ -12,7 +12,6 @@ source:
   - url: https://github.com/foonathan/memory/archive/refs/tags/v{{ major_version }}.{{ minor_version }}-{{ patch_version }}.tar.gz
     sha256: 19eb61c5cba6ccc40b8ee741350fd29402a46641ba752c30b7079528d87dbc79
     patches:
-      - fix-windows-install.patch
       - visibility-control.patch
       - add-comp-base.patch 
 
