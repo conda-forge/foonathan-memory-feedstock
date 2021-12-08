@@ -1,20 +1,22 @@
 {% set name = "foonathan-memory" %}
-{% set version = "0.6.2" %}
+{% set version = "0.7.1" %}
+{% set major_version = version.split('.')[0] %}
+{% set minor_version = version.split('.')[1] %}
+{% set patch_version = version.split('.')[2] %}
 
 package:
   name: {{ name }}
   version: {{ version }}
 
 source:
-  - url: https://github.com/foonathan/memory/archive/refs/tags/v0.6-2.tar.gz
-    sha256: cf302578f3b6721707b8428fd9b97182ada1970ce56f8881ea0b3390b97e66e3
+  - url: https://github.com/foonathan/memory/archive/refs/tags/v{{ major_version }}.{{ minor_version }}-{{ patch_version }}.tar.gz
+    sha256: 19eb61c5cba6ccc40b8ee741350fd29402a46641ba752c30b7079528d87dbc79
     patches:
-      - fix-windows-install.patch
-      - visibility-control.patch
-      - add-comp-base.patch 
+      - add-comp-base.patch
+      - fix-crosscompile.patch
 
 build:
-  number: 2
+  number: 0
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
 
@@ -27,9 +29,9 @@ requirements:
 
 test:
   commands:
-    - test -f ${PREFIX}/lib/libfoonathan_memory-0.6.2${SHLIB_EXT}  # [not win]
-    - if exist %LIBRARY_PREFIX%\\lib\\foonathan_memory-0.6.2.lib (exit 0) else (exit 1)  # [win]
-    - if exist %LIBRARY_PREFIX%\\bin\\foonathan_memory-0.6.2.dll (exit 0) else (exit 1)  # [win]
+    - test -f ${PREFIX}/lib/libfoonathan_memory-{{ version }}${SHLIB_EXT}  # [not win]
+    - if exist %LIBRARY_PREFIX%\\lib\\foonathan_memory-{{ version }}.lib (exit 0) else (exit 1)  # [win]
+    - if exist %LIBRARY_PREFIX%\\bin\\foonathan_memory-{{ version }}.dll (exit 0) else (exit 1)  # [win]
 
 about:
   home: https://github.com/foonathan/memory
@@ -43,3 +45,4 @@ extra:
   recipe-maintainers:
     - seanyen
     - wolfv
+    - Tobias-Fischer
