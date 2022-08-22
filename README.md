@@ -3,7 +3,7 @@ About foonathan-memory
 
 Home: https://github.com/foonathan/memory
 
-Package license: zlib
+Package license: Zlib
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/foonathan-memory-feedstock/blob/main/LICENSE.txt)
 
