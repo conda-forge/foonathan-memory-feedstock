@@ -1,5 +1,5 @@
 {% set name = "foonathan-memory" %}
-{% set version = "0.7.2" %}
+{% set version = "0.7.3" %}
 {% set major_version = version.split('.')[0] %}
 {% set minor_version = version.split('.')[1] %}
 {% set patch_version = version.split('.')[2] %}
@@ -10,13 +10,13 @@ package:
 
 source:
   - url: https://github.com/foonathan/memory/archive/refs/tags/v{{ major_version }}.{{ minor_version }}-{{ patch_version }}.tar.gz
-    sha256: 8aba7211bb0e59b7538decda453e492cc6e36f8781508ed92b38cbafe8a48762
+    sha256: 4203d15db22a94a3978eeb1afb59a37d35c57c0f148733f0f1a53a6281cb74dd
     patches:
       - add-comp-base.patch
       - fix-crosscompile.patch
 
 build:
-  number: 1
+  number: 0
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x.x') }}
 
