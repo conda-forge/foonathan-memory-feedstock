@@ -22,9 +22,9 @@ build:
 
 requirements:
   build:
-    - {{ compiler('cxx') }}              # [not win]
-    - {{ compiler('c') }}                # [not win]
-    - {{ stdlib("c") }}                  # [not win]
+    - {{ compiler('cxx') }}
+    - {{ compiler('c') }}
+    - {{ stdlib("c") }}
     - ninja
     - cmake
 
