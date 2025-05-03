@@ -11,13 +11,17 @@ cmake ^
     -DCMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP=True ^
     -DBUILD_SHARED_LIBS=ON ^
     -DFOONATHAN_MEMORY_BUILD_EXAMPLES=OFF ^
-    -DFOONATHAN_MEMORY_BUILD_TESTS=OFF ^
+    -DFOONATHAN_MEMORY_BUILD_TESTS=ON ^
     -DFOONATHAN_MEMORY_BUILD_TOOLS=ON ^
     %SRC_DIR%
 if errorlevel 1 exit 1
 
 :: Build.
 cmake --build . --config Release
+if errorlevel 1 exit 1
+
+:: Test.
+ctest --test-dir . --output-on-failure --build-config Release
 if errorlevel 1 exit 1
 
 :: Install.
