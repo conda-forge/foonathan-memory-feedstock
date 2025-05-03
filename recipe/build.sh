@@ -16,7 +16,7 @@ cmake ${CMAKE_ARGS} .. \
 cmake --build . --config Release -- -j$CPU_COUNT
 
 if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" ]]; then
-  ctest --test-dir build --output-on-failure
+  ctest --test-dir . --output-on-failure
 fi
 
 cmake --build . --config Release --target install
