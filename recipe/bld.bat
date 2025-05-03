@@ -21,7 +21,7 @@ cmake --build . --config Release
 if errorlevel 1 exit 1
 
 :: Test.
-ctest --test-dir build --output-on-failure --build-config Release
+ctest --test-dir . --output-on-failure --build-config Release
 if errorlevel 1 exit 1
 
 :: Install.
