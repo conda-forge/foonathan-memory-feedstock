@@ -1,0 +1,17 @@
+diff --git a/test/CMakeLists.txt b/test/CMakeLists.txt
+index 431fefb..0d11ee3 100644
+--- a/test/CMakeLists.txt
++++ b/test/CMakeLists.txt
+@@ -8,11 +8,7 @@ target_link_libraries(foonathan_memory_profiling foonathan_memory)
+ target_include_directories(foonathan_memory_profiling PRIVATE
+                             ${FOONATHAN_MEMORY_SOURCE_DIR}/include/foonathan/memory)
+ 
+-# Fetch doctest.
+-message(STATUS "Fetching doctest")
+-include(FetchContent)
+-FetchContent_Declare(doctest URL https://github.com/doctest/doctest/archive/refs/tags/v2.4.12.zip)
+-FetchContent_MakeAvailable(doctest)
++find_package(doctest CONFIG REQUIRED)
+ 
+ set(tests
+     test_allocator.hpp
