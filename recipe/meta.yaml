@@ -27,7 +27,7 @@ requirements:
     - ninja
     - cmake <4
   host:
-    - doctest >=2.4.12,<3
+    - doctest >=2.4.11,<3  # [not ppc64le]
 
 test:
   requires:
