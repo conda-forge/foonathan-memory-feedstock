@@ -1,0 +1,75 @@
+schema_version: 1
+
+context:
+  name: foonathan-memory
+  version: "0.7.4"
+  build_number: 1
+
+package:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+  url: https://github.com/foonathan/memory/archive/refs/tags/v0.7-4.tar.gz
+  sha256: e6b532c78022709dcf8ae3db9cad0d687df12ec67141f688a01a1abd82ed2810
+  patches:
+    - use-system-doctest.patch
+
+build:
+  number: ${{ build_number }}
+  script:
+    file: ${{ "build.bat" if win else "build.sh" }}
+
+requirements:
+  build:
+    - ${{ compiler("c") }}
+    - ${{ compiler("cxx") }}
+    - ${{ stdlib("c") }}
+    - cmake <4
+    - ninja
+  host:
+    - if: not ppc64le
+      then: doctest >=2.4.11,<3
+  run_exports:
+    - ${{ pin_subpackage(name, upper_bound="x.x.x") }}
+
+tests:
+  - files:
+      recipe:
+        - test_package
+    requirements:
+      run:
+        - ${{ compiler("c") }}
+        - ${{ compiler("cxx") }}
+        - ${{ stdlib("c") }}
+        - cmake <4
+        - ninja
+    script:
+      - if: not win
+        then:
+          - test -f "${PREFIX}/lib/libfoonathan_memory-${{ version }}${SHLIB_EXT}"
+          - cmake -S test_package -B test_build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="${PREFIX}"
+          - cmake --build test_build --config Release
+          - ./test_build/foonathan_memory_consumer
+      - if: win
+        then:
+          - if not exist "%LIBRARY_PREFIX%\\lib\\foonathan_memory-${{ version }}.lib" exit 1
+          - if not exist "%LIBRARY_PREFIX%\\bin\\foonathan_memory-${{ version }}.dll" exit 1
+          - cmake -S test_package -B test_build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="%LIBRARY_PREFIX%"
+          - cmake --build test_build --config Release
+          - test_build\\foonathan_memory_consumer.exe
+
+about:
+  homepage: https://github.com/foonathan/memory
+  summary: STL compatible C++ memory allocator library using a RawAllocator concept
+  description: |
+    STL compatible C++ memory allocator library using a new RawAllocator concept that is similar
+    to an Allocator but easier to use and write.
+  license: Zlib
+  license_file: LICENSE
+
+extra:
+  recipe-maintainers:
+    - seanyen
+    - wolfv
+    - Tobias-Fischer
