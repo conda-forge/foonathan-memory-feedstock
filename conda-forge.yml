@@ -5,5 +5,8 @@ github:
   branch_name: main
   tooling_branch_name: main
 conda_build:
+  error_overlinking: true
   pkg_format: '2'
+conda_build_tool: rattler-build
+conda_install_tool: pixi
 test: native_and_emulated

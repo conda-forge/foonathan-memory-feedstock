@@ -7,9 +7,10 @@ Home: https://github.com/foonathan/memory
 
 Package license: Zlib
 
-Summary: STL compatible C++ memory allocator library using a new RawAllocator concept that is similar
-to an Allocator but easier to use and write.
+Summary: STL compatible C++ memory allocator library using a RawAllocator concept
 
+STL compatible C++ memory allocator library using a new RawAllocator concept that is similar
+to an Allocator but easier to use and write.
 
 Current build status
 ====================
